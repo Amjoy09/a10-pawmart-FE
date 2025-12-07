@@ -9,7 +9,7 @@ import ExpertVet from "../components/ExpertVet";
 const Home = () => {
   return (
     <div>
-      <div className="mt-30 md:mt-10">
+      <div className="mt-30 md:mt-0">
         <Slider></Slider>
       </div>
       <PopularServices></PopularServices>

@@ -12,7 +12,7 @@ const Slider = () => {
       <Swiper
         navigation={true}
         modules={[Navigation]}
-        className="mySwiper h-[420px]"
+        className="mySwiper h-[500px]"
       >
         <SwiperSlide>
           <img className="w-full" src={img1} alt="" />
