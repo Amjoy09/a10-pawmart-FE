@@ -1,42 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
-
-import { toast } from "react-toastify";
+import { AuthContext } from "../provider/AuthProvider";
 
 const ServiceDetails = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [service, setService] = useState([]);
   const { myId } = useParams();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-  });
-  console.log(service);
-
-  const handleOpenForm = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!formData.name.trim() || !formData.email.trim()) {
-      toast.error("Please enter both name and email!");
-      return; // stop execution
-    }
-
-    toast("Booking successful!");
-
-    setFormData({
-      name: "",
-      email: "",
-    });
-  };
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     fetch(`http://localhost:3000/services/${myId}`)
@@ -53,72 +22,127 @@ const ServiceDetails = () => {
           src={service?.image}
           alt="pet-service"
         />
-        <div className="space-y-1">
-          <h2 className="text-2xl font-semibold">
-            Service Name: <span className="text-xl">{service?.name}</span>
-          </h2>
-          <h2 className="text-2xl font-semibold">
-            Provider Name:{" "}
-            <span className="text-xl">{service?.providerName}</span>
-          </h2>
-          <h2 className="text-2xl font-semibold">
-            Provider E-mail:{" "}
-            <span className="text-xl">{service?.providerEmail}</span>
-          </h2>
-          <h2 className="text-2xl font-semibold">
-            Price: <span className="text-xl">{service?.price}</span>
-          </h2>
-          <h2 className="text-2xl font-semibold">
-            Rating: <span className="text-xl">{service?.rating}</span>
-          </h2>
-          <h2 className="text-2xl font-semibold">
-            Description:{" "}
-            <span className="text-xl font-normal">{service?.description}</span>
-          </h2>
-          <h2 className="text-2xl font-semibold">
-            Category: <span className="text-xl">{service?.category}</span>
-          </h2>
+        <div>
           <button
-            onClick={handleOpenForm}
-            className="bg-black text-white mt-10 px-6 text-[20px] font-semibold py-2 rounded-sm cursor-pointer"
+            className="btn bg-black text-white py-6 px-7 text-xl font-bold"
+            onClick={() => document.getElementById("my_modal_1").showModal()}
           >
-            {!isOpen ? "Love This Product !" : "Hide Purchasing Form"}
+            ORDER / ADOPT
           </button>
+          <dialog id="my_modal_1" className="modal">
+            <div className="modal-box">
+              <div>
+                <form className="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4">
+                  <legend className="fieldset-legend pt-5 text-3xl font-bold">
+                    Order/Adopt Form
+                  </legend>
+
+                  <label className="label text-lg font-semibold">
+                    Buyer Name
+                  </label>
+                  <input
+                    defaultValue={user?.displayName}
+                    type="text"
+                    className="input w-10/12 mx-auto"
+                    placeholder="Your Name"
+                  />
+
+                  <label className="label text-lg font-semibold">
+                    Buyer Email
+                  </label>
+                  <input
+                    defaultValue={user?.email}
+                    type="email"
+                    className="input mx-auto w-10/12"
+                    placeholder="Email"
+                    readOnly
+                  />
+
+                  <label className="label text-lg font-semibold">
+                    Product ID
+                  </label>
+                  <input
+                    defaultValue={service?._id}
+                    type="text"
+                    className="input  w-10/12 mx-auto"
+                    placeholder="Unique ID"
+                    readOnly
+                  />
+                  <label className="label text-lg font-semibold">
+                    Product Name
+                  </label>
+                  <input
+                    defaultValue={service?.name}
+                    type="text"
+                    className="input  w-10/12 mx-auto"
+                    placeholder="Product/Service Name"
+                    readOnlys
+                  />
+                  <label className="label text-lg font-semibold">
+                    Product Quantity
+                  </label>
+                  <input
+                    type="number"
+                    className="input  w-10/12 mx-auto"
+                    placeholder="Product Quantity"
+                  />
+                  <label className="label text-lg font-semibold">Price</label>
+                  <input
+                    defaultValue={service?.price}
+                    type="text"
+                    className="input  w-10/12 mx-auto"
+                    placeholder="Price"
+                    readOnly
+                  />
+
+                  <label className="label text-lg font-semibold">Address</label>
+                  <input
+                    defaultValue={service?.location}
+                    type="text"
+                    className="input  w-10/12 mx-auto"
+                    placeholder="Address"
+                  />
+                  <label className="label text-lg font-semibold">Date</label>
+                  <input
+                    type="number"
+                    className="input  w-10/12 mx-auto"
+                    placeholder="Date"
+                  />
+                  <label className="label text-lg font-semibold">
+                    Contact Number
+                  </label>
+                  <input
+                    type="number"
+                    className="input  w-10/12 mx-auto"
+                    placeholder="Contact Number"
+                  />
+                  <label className="label text-lg font-semibold">
+                    Additional Notes
+                  </label>
+                  <textarea
+                    type="text"
+                    className="input  w-10/12 mx-auto h-25"
+                    placeholder="Comment Here..."
+                  />
+                </form>
+                <button
+                  type="submit"
+                  className="btn btn-primary text-white text-center w-full mt-5 "
+                >
+                  Submit
+                </button>
+              </div>
+              <div className="modal-action">
+                <form method="dialog">
+                  <button className="btn bg-neutral-600 text-white">
+                    Close Modal
+                  </button>
+                </form>
+              </div>
+            </div>
+          </dialog>
         </div>
       </div>
-      {isOpen && (
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-3 md:w-4/12 w-11/12 mx-auto border border-gray-400 rounded-lg px-10 pb-18 pt-12 bg-gray-100 mb-10 mt-1"
-        >
-          <label className="text-xl font-semibold">Name</label>
-          <input
-            className="border border-gray-400 py-3 px-3 mb-4 bg-white rounded-sm"
-            type="text"
-            name="name"
-            placeholder="Your Name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-
-          <label className="text-xl font-semibold">Email</label>
-          <input
-            className="border border-gray-400 py-3 px-3 bg-white rounded-sm"
-            type="email"
-            name="email"
-            placeholder="Your Email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-
-          <button
-            type="submit"
-            className="bg-black text-center text-white text-xl font-semibold py-3 mt-3 rounded-sm cursor-pointer"
-          >
-            Purchase Now
-          </button>
-        </form>
-      )}
     </div>
   );
 };
