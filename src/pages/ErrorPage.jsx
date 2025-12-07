@@ -1,7 +1,5 @@
 import React from "react";
 import errImg from "../assets/error-404.png";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import { useRouteError } from "react-router";
 
 const ErrorPage = () => {
@@ -9,7 +7,6 @@ const ErrorPage = () => {
 
   return (
     <div>
-      <Navbar></Navbar>
       <div className="flex justify-center">
         <img src={errImg} alt="" />
       </div>
@@ -19,7 +16,6 @@ const ErrorPage = () => {
       <p className="text-4xl font-semibold text-red-600 mb-4 text-center mt-4">
         {error.message}
       </p>
-      <Footer></Footer>
     </div>
   );
 };

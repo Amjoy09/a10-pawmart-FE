@@ -5,12 +5,14 @@ import { toast } from "react-toastify";
 
 const ServiceDetails = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [services, setServices] = useState([]);
+  const [service, setService] = useState([]);
   const { myId } = useParams();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
   });
+  console.log(service);
+
   const handleOpenForm = () => {
     setIsOpen(!isOpen);
   };
@@ -37,49 +39,44 @@ const ServiceDetails = () => {
   };
 
   useEffect(() => {
-    fetch("/services.json")
+    fetch(`http://localhost:3000/services/${myId}`)
       .then((res) => res.json())
-      .then((data) => setServices(data))
+      .then((data) => setService(data))
       .catch((err) => console.log(err));
-  }, []);
-
-  const findResult = services.find((service) => service.serviceId == myId);
+  }, [myId]);
 
   return (
     <div>
       <div className="flex flex-col md:flex-row items-center gap-5 p-17 md:px-0 px-8">
         <img
           className="md:w-5/12 w-full h-105 rounded-lg md:border-4 border-none"
-          src={findResult?.image}
-          alt=""
+          src={service?.image}
+          alt="pet-service"
         />
         <div className="space-y-1">
           <h2 className="text-2xl font-semibold">
-            Service Name:{" "}
-            <span className="text-xl">{findResult?.serviceName}</span>
+            Service Name: <span className="text-xl">{service?.name}</span>
           </h2>
           <h2 className="text-2xl font-semibold">
             Provider Name:{" "}
-            <span className="text-xl">{findResult?.providerName}</span>
+            <span className="text-xl">{service?.providerName}</span>
           </h2>
           <h2 className="text-2xl font-semibold">
             Provider E-mail:{" "}
-            <span className="text-xl">{findResult?.providerEmail}</span>
+            <span className="text-xl">{service?.providerEmail}</span>
           </h2>
           <h2 className="text-2xl font-semibold">
-            Price: <span className="text-xl">{findResult?.price}</span>
+            Price: <span className="text-xl">{service?.price}</span>
           </h2>
           <h2 className="text-2xl font-semibold">
-            Rating: <span className="text-xl">{findResult?.rating}</span>
+            Rating: <span className="text-xl">{service?.rating}</span>
           </h2>
           <h2 className="text-2xl font-semibold">
             Description:{" "}
-            <span className="text-xl font-normal">
-              {findResult?.description}
-            </span>
+            <span className="text-xl font-normal">{service?.description}</span>
           </h2>
           <h2 className="text-2xl font-semibold">
-            Category: <span className="text-xl">{findResult?.category}</span>
+            Category: <span className="text-xl">{service?.category}</span>
           </h2>
           <button
             onClick={handleOpenForm}

@@ -63,6 +63,7 @@ const AddService = () => {
             <option value="Pets">Pets</option>
             <option value="Accessories">Accessories</option>
             <option value="Care Products">Care Products</option>
+            <option value="Foods">Foods</option>
           </select>
         </div>
 
