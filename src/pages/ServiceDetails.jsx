@@ -46,8 +46,8 @@ const ServiceDetails = () => {
   }, [myId]);
 
   return (
-    <div>
-      <div className="flex flex-col md:flex-row items-center gap-5 p-17 md:px-0 px-8">
+    <div className="">
+      <div className="flex justify-center flex-col md:flex-row items-center gap-5 py-17 md:px-0 px-8 ">
         <img
           className="md:w-5/12 w-full h-105 rounded-lg md:border-4 border-none"
           src={service?.image}
@@ -82,7 +82,7 @@ const ServiceDetails = () => {
             onClick={handleOpenForm}
             className="bg-black text-white mt-10 px-6 text-[20px] font-semibold py-2 rounded-sm cursor-pointer"
           >
-            {!isOpen ? " Book This Service" : "Hide Booking Form"}
+            {!isOpen ? "Love This Product !" : "Hide Purchasing Form"}
           </button>
         </div>
       </div>
@@ -115,7 +115,7 @@ const ServiceDetails = () => {
             type="submit"
             className="bg-black text-center text-white text-xl font-semibold py-3 mt-3 rounded-sm cursor-pointer"
           >
-            Book Now
+            Purchase Now
           </button>
         </form>
       )}
