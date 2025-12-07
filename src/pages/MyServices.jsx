@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 import { Link } from "react-router";
+import axios from "axios";
 
 const MyServices = () => {
-  const [MyServices, setMyServices] = useState([]);
+  const [myServices, setMyServices] = useState([]);
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -12,6 +13,20 @@ const MyServices = () => {
       .then((data) => setMyServices(data))
       .catch((err) => console.log(err));
   }, [user?.email]);
+
+  const handleDelete = (id) => {
+    axios
+      .delete(`http://localhost:3000/delete/${id}`)
+      .then((res) => {
+        console.log(res.data);
+
+        const filterData = myServices.filter((service) => service._id != id);
+        setMyServices(filterData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div>
@@ -26,7 +41,7 @@ const MyServices = () => {
             </tr>
           </thead>
           <tbody>
-            {MyServices.map((service) => (
+            {myServices.map((service) => (
               <tr>
                 <td>
                   <div className="flex items-center gap-3">
@@ -55,7 +70,10 @@ const MyServices = () => {
                 </td>
                 <td>{service?.price} Taka</td>
                 <td className="space-x-2">
-                  <button className="btn btn-ghost btn-xs bg-red-700 text-white">
+                  <button
+                    onClick={() => handleDelete(service?._id)}
+                    className="btn btn-ghost btn-xs bg-red-700 text-white"
+                  >
                     Delete
                   </button>
                   <Link to={`/update-service/${service?._id}`}>
