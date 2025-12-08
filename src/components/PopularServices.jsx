@@ -15,7 +15,7 @@ const PopularServices = () => {
   return (
     <div>
       <h2 className="md:text-3xl text-xl font-semibold text-center mt-20 mb-10">
-        Popular Winter Care Services
+        Pet Adoption & Supply Services
       </h2>
       <div className="grid md:grid-cols-3 grid-cols-1 gap-5 px-0 md:px-15">
         {services.slice(0, 6).map((service) => (
