@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { AuthContext } from "../provider/AuthProvider";
+import axios from "axios";
 
 const ServiceDetails = () => {
   const [service, setService] = useState([]);
@@ -13,6 +14,42 @@ const ServiceDetails = () => {
       .then((data) => setService(data))
       .catch((err) => console.log(err));
   }, [myId]);
+
+  const handleOrder = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const buyerName = form.buyerName.value;
+    const buyerEmail = form.buyerEmail.value;
+    const productName = form.productName.value;
+    const productQuantity = parseInt(form.productQuantity.value);
+    const price = parseInt(form.price.value);
+    const address = form.address.value;
+
+    const contactNumber = form.contactNumber.value;
+    const notes = form.notes.value;
+
+    const formData = {
+      buyerName,
+      buyerEmail,
+      productId: myId,
+      productName,
+      productQuantity,
+      price,
+      address,
+      date: new Date(),
+      contactNumber,
+      notes,
+    };
+
+    axios
+      .post("http://localhost:3000/orders", formData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className="">
@@ -32,7 +69,10 @@ const ServiceDetails = () => {
           <dialog id="my_modal_1" className="modal">
             <div className="modal-box">
               <div>
-                <form className="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4">
+                <form
+                  onSubmit={handleOrder}
+                  className="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4"
+                >
                   <legend className="fieldset-legend pt-5 text-3xl font-bold">
                     Order/Adopt Form
                   </legend>
@@ -41,6 +81,7 @@ const ServiceDetails = () => {
                     Buyer Name
                   </label>
                   <input
+                    name="buyerName"
                     defaultValue={user?.displayName}
                     type="text"
                     className="input w-10/12 mx-auto"
@@ -51,17 +92,20 @@ const ServiceDetails = () => {
                     Buyer Email
                   </label>
                   <input
+                    name="buyerEmail"
                     defaultValue={user?.email}
                     type="email"
                     className="input mx-auto w-10/12"
                     placeholder="Email"
                     readOnly
+                    required
                   />
 
                   <label className="label text-lg font-semibold">
                     Product ID
                   </label>
                   <input
+                    name="productId"
                     defaultValue={service?._id}
                     type="text"
                     className="input  w-10/12 mx-auto"
@@ -72,22 +116,27 @@ const ServiceDetails = () => {
                     Product Name
                   </label>
                   <input
+                    name="productName"
                     defaultValue={service?.name}
                     type="text"
                     className="input  w-10/12 mx-auto"
                     placeholder="Product/Service Name"
-                    readOnlys
+                    readOnly
+                    required
                   />
                   <label className="label text-lg font-semibold">
                     Product Quantity
                   </label>
                   <input
+                    name="productQuantity"
                     type="number"
                     className="input  w-10/12 mx-auto"
                     placeholder="Product Quantity"
+                    required
                   />
                   <label className="label text-lg font-semibold">Price</label>
                   <input
+                    name="price"
                     defaultValue={service?.price}
                     type="text"
                     className="input  w-10/12 mx-auto"
@@ -97,14 +146,15 @@ const ServiceDetails = () => {
 
                   <label className="label text-lg font-semibold">Address</label>
                   <input
-                    defaultValue={service?.location}
+                    name="address"
                     type="text"
                     className="input  w-10/12 mx-auto"
                     placeholder="Address"
                   />
                   <label className="label text-lg font-semibold">Date</label>
                   <input
-                    type="number"
+                    name="date"
+                    type="date"
                     className="input  w-10/12 mx-auto"
                     placeholder="Date"
                   />
@@ -112,25 +162,28 @@ const ServiceDetails = () => {
                     Contact Number
                   </label>
                   <input
+                    name="contactNumber"
                     type="number"
                     className="input  w-10/12 mx-auto"
                     placeholder="Contact Number"
+                    required
                   />
                   <label className="label text-lg font-semibold">
                     Additional Notes
                   </label>
                   <textarea
+                    name="notes"
                     type="text"
                     className="input  w-10/12 mx-auto h-25"
-                    placeholder="Comment Here..."
+                    placeholder="Leave Your Comment Here..."
                   />
+                  <button
+                    type="submit"
+                    className="btn btn-primary text-white text-center w-full mt-5 "
+                  >
+                    Order
+                  </button>
                 </form>
-                <button
-                  type="submit"
-                  className="btn btn-primary text-white text-center w-full mt-5 "
-                >
-                  Submit
-                </button>
               </div>
               <div className="modal-action">
                 <form method="dialog">

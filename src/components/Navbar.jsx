@@ -50,6 +50,9 @@ const Navbar = () => {
             <li>
               <NavLink to="/my-services">My Services</NavLink>
             </li>
+            <li>
+              <NavLink to="/my-orders">My Orders</NavLink>
+            </li>
           </ul>
         </div>
         <Link
@@ -76,16 +79,27 @@ const Navbar = () => {
               My Profile
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/add-service" className="font-medium text-lg">
-              Add Service
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/my-services" className="font-medium text-lg">
-              My Services
-            </NavLink>
-          </li>
+          {user && (
+            <li>
+              <NavLink to="/add-service" className="font-medium text-lg">
+                Add Service
+              </NavLink>
+            </li>
+          )}
+          {user && (
+            <li>
+              <NavLink to="/my-services" className="font-medium text-lg">
+                My Services
+              </NavLink>
+            </li>
+          )}
+          {user && (
+            <li>
+              <NavLink to="/my-orders" className="font-medium text-lg">
+                My Orders
+              </NavLink>
+            </li>
+          )}
         </ul>
       </div>
       <div className="navbar-end space-x-5">

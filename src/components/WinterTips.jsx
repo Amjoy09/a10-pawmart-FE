@@ -6,17 +6,17 @@ const WinterTips = () => {
     <div className="flex flex-col-reverse md:flex-row justify-around px-6 md:px-20 md:py-25 py-10 md:bg-yellow-300 bg-lime-300 rounded-lg gap-8">
       <div className="md:px-15 px-6">
         <h1 className="md:text-[30px] text-[20px] font-bold mb-7 md:text-green-600 text-red-900">
-          Winter Care Tips for Pets
+          Why Adopt from PawMart?
         </h1>
         <ul class="md:text-xl text-md list-disc space-y-3 font-semibold">
-          <li>Keep them warm and dry</li>
-          <li>Protect their paws</li>
-          <li>Avoid winter toxins </li>
-          <li>Maintain health and well-being </li>
+          <li>Save a life today.</li>
+          <li>Fight puppy mills.</li>
+          <li>Give a pet a second chance. </li>
+          <li>Purebreds & mixes available. </li>
           <li>Ensure visibility and identification </li>
-          <li>Provide indoor exercise </li>
-          <li>Keep Them Mentally & Physically Active</li>
-          <li>Maintain Grooming and Skin Care</li>
+          <li>Rescue pets love harder.</li>
+          <li>Free lifelong support.</li>
+          <li>Adopt, don’t shop.</li>
         </ul>
       </div>
       <figure className="md:w-180 w-full ">

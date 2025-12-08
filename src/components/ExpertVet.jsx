@@ -7,7 +7,7 @@ const ExpertVet = () => {
   return (
     <div>
       <h1 className="md:text-4xl text-3xl font-bold text-center mb-0 md:mb-8 py-10">
-        Meet Our Expert Vet
+        Meet Our Pet Heroes
       </h1>
       <div className="flex gap-7 flex-col md:flex-row justify-center">
         <div className="card bg-base-100 md:w-96 w-full shadow-sm">
