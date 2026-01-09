@@ -9,7 +9,7 @@ const ServiceDetails = () => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/services/${myId}`)
+    fetch(`https://a10-pawmart.vercel.app/services/${myId}`)
       .then((res) => res.json())
       .then((data) => setService(data))
       .catch((err) => console.log(err));
@@ -42,7 +42,7 @@ const ServiceDetails = () => {
     };
 
     axios
-      .post("http://localhost:3000/orders", formData)
+      .post("https://a10-pawmart.vercel.app/orders", formData)
       .then((res) => {
         console.log(res);
       })
@@ -55,7 +55,7 @@ const ServiceDetails = () => {
     <div className="">
       <div className="flex justify-center flex-col md:flex-row items-center gap-5 py-17 md:px-0 px-8 ">
         <img
-          className="md:w-5/12 w-full h-105 rounded-lg md:border-4 border-none"
+          className="md:w-5/12 w-10/12 h-40 md:h-105 rounded-lg md:border-4 border-none"
           src={service?.image}
           alt="pet-service"
         />
@@ -108,7 +108,7 @@ const ServiceDetails = () => {
                     name="productId"
                     defaultValue={service?._id}
                     type="text"
-                    className="input  w-10/12 mx-auto"
+                    className="input w-10/12 mx-auto"
                     placeholder="Unique ID"
                     readOnly
                   />
@@ -119,7 +119,7 @@ const ServiceDetails = () => {
                     name="productName"
                     defaultValue={service?.name}
                     type="text"
-                    className="input  w-10/12 mx-auto"
+                    className="input w-10/12 mx-auto"
                     placeholder="Product/Service Name"
                     readOnly
                     required

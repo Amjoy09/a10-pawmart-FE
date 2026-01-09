@@ -6,7 +6,7 @@ const Services = () => {
   const [category, setCategory] = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:3000/services?category=${category}`)
+    fetch(`https://a10-pawmart.vercel.app/services?category=${category}`)
       .then((res) => res.json())
       .then((data) => setServices(data))
       .catch((err) => console.log(err));
@@ -16,7 +16,7 @@ const Services = () => {
       <select
         onChange={(e) => setCategory(e.target.value)}
         defaultValue="Pick a Category"
-        className="select font-semibold ml-15 mt-13"
+        className="select font-semibold ml-15 mt-13 md:w-2/12 w-7/12"
       >
         <option disabled={true}>Pick a Category</option>
         <option value="Pets">Pets</option>

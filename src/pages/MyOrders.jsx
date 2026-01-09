@@ -1,14 +1,21 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import jsPDF from "jspdf";
+import Swal from "sweetalert2";
 
 const MyOrders = () => {
   const [myOrders, setMyOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("all");
 
   useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = () => {
+    setLoading(true);
     axios
-      .get("http://localhost:3000/orders")
+      .get("https://a10-pawmart.vercel.app/orders")
       .then((res) => {
         setMyOrders(res.data);
         setLoading(false);
@@ -16,13 +23,29 @@ const MyOrders = () => {
       .catch((err) => {
         console.error("Error:", err);
         setLoading(false);
+        Swal.fire({
+          icon: "error",
+          title: "Failed to load orders",
+          text: "Please try again later",
+        });
       });
-  }, []);
+  };
+
+  // Filter orders based on active tab
+  const filteredOrders = myOrders.filter(() => {
+    if (activeTab === "all") return true;
+    // Add more filter logic if needed
+    return true;
+  });
 
   // Function to manually create the PDF without jsPDF-autotable
   const generatePDF = () => {
     if (myOrders.length === 0) {
-      alert("No orders to download!");
+      Swal.fire({
+        icon: "warning",
+        title: "No orders",
+        text: "There are no orders to download!",
+      });
       return;
     }
 
@@ -98,16 +121,30 @@ const MyOrders = () => {
 
       // Save the PDF
       doc.save(`order_report_${Date.now()}.pdf`);
+
+      Swal.fire({
+        icon: "success",
+        title: "PDF Downloaded",
+        text: "Order report has been downloaded successfully!",
+      });
     } catch (error) {
       console.error("Error generating PDF:", error);
-      alert("Error generating PDF. Please try again.");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to generate PDF. Please try again.",
+      });
     }
   };
 
   // Alternative: Simple text-based PDF
   const generateSimplePDF = () => {
     if (myOrders.length === 0) {
-      alert("No orders to download!");
+      Swal.fire({
+        icon: "warning",
+        title: "No orders",
+        text: "There are no orders to download!",
+      });
       return;
     }
 
@@ -157,93 +194,306 @@ const MyOrders = () => {
 
     // Save the PDF
     doc.save(`order_report_simple_${Date.now()}.pdf`);
+
+    Swal.fire({
+      icon: "success",
+      title: "PDF Downloaded",
+      text: "Simple order report has been downloaded!",
+    });
+  };
+
+  // Refresh orders
+  const handleRefresh = () => {
+    fetchOrders();
   };
 
   if (loading) {
-    return <div className="text-center py-8">Loading orders...</div>;
+    return (
+      <div className="min-h-screen bg-base-100 text-base-content flex items-center justify-center">
+        <div className="text-center">
+          <div className="loading loading-spinner loading-lg text-primary"></div>
+          <p className="mt-4">Loading your orders...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="p-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">My Orders</h1>
-        <div className="space-x-2">
-          <button
-            onClick={generatePDF}
-            disabled={myOrders.length === 0}
-            className={`px-4 py-2 rounded font-medium ${
-              myOrders.length === 0
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
-            } text-white`}
-          >
-            📥 Download Report (Table)
-          </button>
+    <div className="min-h-screen bg-base-100 text-base-content p-4">
+      {/* Header Section */}
+      <div className="mb-6">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-base-content">
+              My Orders
+            </h1>
+            <p className="text-base-content/70 mt-1">
+              Total Orders:{" "}
+              <span className="font-semibold">{myOrders.length}</span>
+            </p>
+          </div>
 
-          <button
-            onClick={generateSimplePDF}
-            disabled={myOrders.length === 0}
-            className={`px-4 py-2 rounded font-medium ${
-              myOrders.length === 0
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-green-600 hover:bg-green-700"
-            } text-white`}
-          >
-            📄 Download Report (Simple)
-          </button>
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              onClick={handleRefresh}
+              className="btn btn-outline btn-sm md:btn-md 
+                border-base-300 hover:border-primary
+                dark:border-base-300 dark:hover:border-primary"
+            >
+              🔄 Refresh
+            </button>
+
+            <div className="flex gap-2">
+              <button
+                onClick={generatePDF}
+                disabled={myOrders.length === 0}
+                className={`btn btn-sm md:btn-md flex-1 ${
+                  myOrders.length === 0 ? "btn-disabled" : "btn-primary"
+                }`}
+              >
+                <span className="hidden sm:inline">📥 Table Report</span>
+                <span className="sm:hidden">📥 Table</span>
+              </button>
+
+              <button
+                onClick={generateSimplePDF}
+                disabled={myOrders.length === 0}
+                className={`btn btn-sm md:btn-md flex-1 ${
+                  myOrders.length === 0 ? "btn-disabled" : "btn-success"
+                }`}
+              >
+                <span className="hidden sm:inline">📄 Simple Report</span>
+                <span className="sm:hidden">📄 Simple</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      {myOrders.length === 0 ? (
-        <div className="text-center py-8 bg-gray-100 rounded-lg">
-          <p className="text-gray-600">No orders found</p>
-        </div>
-      ) : (
-        <div className="overflow-x-auto bg-white rounded-lg shadow">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  #
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Product
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Price
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Phone
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Location
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Qty
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Date
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {myOrders.map((order, i) => (
-                <tr key={i} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm">{i + 1}</td>
-                  <td className="px-4 py-3 text-sm font-medium">
-                    {order?.productName}
-                  </td>
-                  <td className="px-4 py-3 text-sm">${order?.price}</td>
-                  <td className="px-4 py-3 text-sm">{order?.contactNumber}</td>
-                  <td className="px-4 py-3 text-sm">{order?.address}</td>
-                  <td className="px-4 py-3 text-sm">
-                    {order?.productQuantity}
-                  </td>
-                  <td className="px-4 py-3 text-sm">{order?.date}</td>
+      {/* Mobile Card View */}
+      <div className="md:hidden space-y-4">
+        {myOrders.length === 0 ? (
+          <div className="card bg-base-200 border border-base-300">
+            <div className="card-body text-center py-10">
+              <div className="text-6xl mb-4">📦</div>
+              <h3 className="text-xl font-semibold mb-2">No Orders Yet</h3>
+              <p className="text-base-content/70 mb-4">
+                You haven't placed any orders yet.
+              </p>
+              <button className="btn btn-primary">Browse Products</button>
+            </div>
+          </div>
+        ) : (
+          filteredOrders.map((order, i) => (
+            <div key={i} className="card bg-base-200 border border-base-300">
+              <div className="card-body p-4">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <div className="badge badge-primary badge-sm mb-1">
+                      Order #{i + 1}
+                    </div>
+                    <h3 className="font-bold text-lg line-clamp-1">
+                      {order?.productName}
+                    </h3>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xl font-bold text-primary">
+                      ${order?.price}
+                    </div>
+                    <div className="text-sm text-base-content/70">
+                      Qty: {order?.productQuantity}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="text-base-content/70">📞</span>
+                    <span>{order?.contactNumber}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-base-content/70">📍</span>
+                    <span className="line-clamp-1">{order?.address}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-base-content/70">📅</span>
+                    <span>{order?.date}</span>
+                  </div>
+                </div>
+
+                <div className="card-actions justify-end mt-4">
+                  <button className="btn btn-outline btn-sm border-base-300">
+                    View Details
+                  </button>
+                  <button className="btn btn-primary btn-sm">
+                    Track Order
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden md:block">
+        {myOrders.length === 0 ? (
+          <div className="card bg-base-200 border border-base-300">
+            <div className="card-body text-center py-16">
+              <div className="text-8xl mb-6">📦</div>
+              <h3 className="text-2xl font-semibold mb-3">No Orders Found</h3>
+              <p className="text-base-content/70 mb-6 max-w-md mx-auto">
+                You haven't placed any orders yet. Start shopping to see your
+                orders here!
+              </p>
+              <div className="space-x-3">
+                <button className="btn btn-primary">Browse Products</button>
+                <button className="btn btn-outline border-base-300">
+                  View Services
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="overflow-x-auto bg-base-200 dark:bg-base-300 rounded-xl border border-base-300 shadow-sm">
+            <table className="table w-full text-base-content">
+              <thead className="bg-base-300 dark:bg-base-400">
+                <tr>
+                  <th className="text-base-content font-semibold">#</th>
+                  <th className="text-base-content font-semibold">Product</th>
+                  <th className="text-base-content font-semibold">Price</th>
+                  <th className="text-base-content font-semibold">Phone</th>
+                  <th className="text-base-content font-semibold">Location</th>
+                  <th className="text-base-content font-semibold">Qty</th>
+                  <th className="text-base-content font-semibold">Date</th>
+                  <th className="text-base-content font-semibold">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredOrders.map((order, i) => (
+                  <tr
+                    key={i}
+                    className="hover:bg-base-300/50 dark:hover:bg-base-400/50"
+                  >
+                    <td className="font-medium">{i + 1}</td>
+                    <td>
+                      <div className="font-semibold">{order?.productName}</div>
+                    </td>
+                    <td>
+                      <span className="font-bold text-primary">
+                        ${order?.price}
+                      </span>
+                    </td>
+                    <td className="font-mono">{order?.contactNumber}</td>
+                    <td className="max-w-xs truncate">{order?.address}</td>
+                    <td>
+                      <span className="badge badge-outline border-base-300">
+                        {order?.productQuantity}
+                      </span>
+                    </td>
+                    <td>{order?.date}</td>
+                    <td>
+                      <div className="flex gap-2">
+                        <button className="btn btn-xs btn-outline border-base-300">
+                          View
+                        </button>
+                        <button className="btn btn-xs btn-primary">
+                          Track
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {/* Summary Stats */}
+      {myOrders.length > 0 && (
+        <div className="mt-8">
+          <h3 className="text-lg font-semibold mb-4 text-base-content">
+            Order Summary
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="card bg-base-200 border border-base-300">
+              <div className="card-body p-4">
+                <div className="flex items-center gap-3">
+                  <div className="bg-primary/10 p-2 rounded-lg">
+                    <span className="text-primary text-xl">📦</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-base-content/70">Total Orders</p>
+                    <p className="text-2xl font-bold">{myOrders.length}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="card bg-base-200 border border-base-300">
+              <div className="card-body p-4">
+                <div className="flex items-center gap-3">
+                  <div className="bg-green-500/10 p-2 rounded-lg">
+                    <span className="text-green-500 text-xl">💰</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-base-content/70">Total Spent</p>
+                    <p className="text-2xl font-bold">
+                      $
+                      {myOrders
+                        .reduce(
+                          (sum, order) => sum + (parseFloat(order.price) || 0),
+                          0
+                        )
+                        .toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="card bg-base-200 border border-base-300">
+              <div className="card-body p-4">
+                <div className="flex items-center gap-3">
+                  <div className="bg-blue-500/10 p-2 rounded-lg">
+                    <span className="text-blue-500 text-xl">📅</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-base-content/70">Latest Order</p>
+                    <p className="text-lg font-bold truncate">
+                      {myOrders[0]?.date || "N/A"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="card bg-base-200 border border-base-300">
+              <div className="card-body p-4">
+                <div className="flex items-center gap-3">
+                  <div className="bg-purple-500/10 p-2 rounded-lg">
+                    <span className="text-purple-500 text-xl">📞</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-base-content/70">
+                      Average Price
+                    </p>
+                    <p className="text-2xl font-bold">
+                      $
+                      {(
+                        myOrders.reduce(
+                          (sum, order) => sum + (parseFloat(order.price) || 0),
+                          0
+                        ) / myOrders.length || 0
+                      ).toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

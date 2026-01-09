@@ -6,7 +6,7 @@ const PopularServices = () => {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/services")
+    fetch("https://a10-pawmart.vercel.app/services")
       .then((res) => res.json())
       .then((data) => setServices(data))
       .catch((err) => console.log(err));

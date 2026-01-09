@@ -21,7 +21,7 @@ const Navbar = () => {
     signOut(auth);
   };
   return (
-    <div className="navbar bg-base-100 shadow-sm px-15">
+    <div className="navbar flex flex-col md:flex-row bg-base-100 shadow-sm px-4 md:px-8 lg:px-15">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -42,8 +42,8 @@ const Navbar = () => {
             </svg>
           </div>
           <ul
-            tabIndex="-1"
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            tabIndex={0}
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-50 mt-3 w-52 p-2 shadow"
           >
             <li>
               <NavLink to="/">Home</NavLink>
@@ -54,20 +54,26 @@ const Navbar = () => {
             <li>
               <NavLink to="/profile">My Profile</NavLink>
             </li>
-            <li>
-              <NavLink to="/add-service">Add Service</NavLink>
-            </li>
-            <li>
-              <NavLink to="/my-services">My Services</NavLink>
-            </li>
-            <li>
-              <NavLink to="/my-orders">My Orders</NavLink>
-            </li>
+            {user && (
+              <li>
+                <NavLink to="/add-service">Add Service</NavLink>
+              </li>
+            )}
+            {user && (
+              <li>
+                <NavLink to="/my-services">My Services</NavLink>
+              </li>
+            )}
+            {user && (
+              <li>
+                <NavLink to="/my-orders">My Orders</NavLink>
+              </li>
+            )}
           </ul>
         </div>
         <Link
           to="/"
-          className="btn btn-ghost text-xl border-rose-300 bg-cyan-900 text-rose-300 h-[60px]"
+          className="btn btn-ghost text-lg md:text-xl border-rose-300 bg-cyan-900 text-rose-300 h-12 md:h-15"
         >
           🐹 PawMart🐶
         </Link>
@@ -112,7 +118,7 @@ const Navbar = () => {
           )}
         </ul>
       </div>
-      <div className="navbar-end space-x-5">
+      <div className="navbar-end flex items-center gap-3 md:gap-5">
         <label className="flex cursor-pointer gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -148,7 +154,7 @@ const Navbar = () => {
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
         </label>
-        <div className="relative group">
+        <div className="relative group hidden md:block">
           {user && (
             <>
               <img

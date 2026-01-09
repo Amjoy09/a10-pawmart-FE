@@ -33,17 +33,19 @@ const AddService = () => {
 
     console.log(formData);
 
-    axios.post("http://localhost:3000/services", formData).then((res) => {
-      console.log(res);
-      if (res.data.acknowledged) {
-        Swal.fire({
-          title: "Listing Added Successfully!",
-          icon: "success",
-          draggable: true,
-        });
-        form.reset();
-      }
-    });
+    axios
+      .post("https://a10-pawmart.vercel.app/services", formData)
+      .then((res) => {
+        console.log(res);
+        if (res.data.acknowledged) {
+          Swal.fire({
+            title: "Listing Added Successfully!",
+            icon: "success",
+            draggable: true,
+          });
+          form.reset();
+        }
+      });
   };
 
   return (
