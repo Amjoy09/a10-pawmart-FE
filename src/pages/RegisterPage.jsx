@@ -3,7 +3,7 @@ import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../provider/AuthProvider";
 import auth from "../firebase/firebase.config";
-import { updateProfile } from "firebase/auth";
+import { signOut, updateProfile } from "firebase/auth";
 import { toast } from "react-toastify";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import "react-toastify/dist/ReactToastify.css";
@@ -67,6 +67,7 @@ const RegisterPage = () => {
 
     registerWithEmailPassword(email, pass)
       .then((userCredential) => {
+        signOut(auth);
         updateProfile(auth.currentUser, {
           displayName: name,
           photoURL:
@@ -78,7 +79,8 @@ const RegisterPage = () => {
               position: "top-center",
               autoClose: 3000,
             });
-            navigate("/");
+
+            navigate("/login");
           })
           .catch((error) => {
             console.log(error);
@@ -125,11 +127,13 @@ const RegisterPage = () => {
       .then((result) => {
         const user = result.user;
         setUser(user);
+        signOut(auth);
         toast.success("🎉 Google Sign Up Successful!", {
           position: "top-center",
           autoClose: 3000,
         });
-        navigate("/");
+
+        navigate("/login");
       })
       .catch((err) => {
         console.log(err);
@@ -144,7 +148,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-base-100 to-base-200 text-base-content flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-base-100 to-base-200 text-base-content flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo/Brand Section */}
         <div className="text-center mb-8">

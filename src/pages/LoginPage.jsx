@@ -103,7 +103,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-base-100 to-base-200 text-base-content flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-base-100 to-base-200 text-base-content flex items-center justify-center p-4">
       <ToastContainer
         position="top-center"
         theme="colored"

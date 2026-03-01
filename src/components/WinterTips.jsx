@@ -1,4 +1,3 @@
-import React from "react";
 import petImg from "../assets/feed-pets-in-winter.jpg";
 
 const WinterTips = () => {

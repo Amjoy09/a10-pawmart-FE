@@ -1,16 +1,65 @@
-# React + Vite
+# 🐾 PawMart
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+PawMart is a full-stack MERN-based pet marketplace web application where users can create accounts, explore pet products, and connect with the pet-loving community.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Live Website
 
-## React Compiler
+🔗 https://a10-pawmart.netlify.app
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📂 GitHub Repositories
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 🔹 Frontend Source Code
+
+https://github.com/Amjoy09/a10-pawmart-FE
+
+### 🔹 Backend Source Code
+
+https://github.com/Amjoy09/a10-pawmartr-BE
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend:
+
+- React.js
+- React Router
+- Firebase Authentication
+- Tailwind CSS + DaisyUI
+- React Toastify
+
+### Backend:
+
+- Node.js
+- Express.js
+- MongoDB
+- CORS
+- dotenv
+
+---
+
+## ✨ Key Features
+
+- 🔐 Email & Google Authentication
+- 📧 Email verification system
+- 🔑 Protected routes
+- 🛍️ Shop page with product categories
+- 📄 About & Contact pages
+- 📱 Fully responsive design
+- 🌙 Modern UI with clean layout
+- 🔄 Real-time authentication state handling
+
+---
+
+## 🔒 Authentication System
+
+- User registration with password validation
+- Google Sign-In integration
+- Email verification required
+- Secure Firebase authentication handling
+
+---
